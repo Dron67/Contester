@@ -1,0 +1,21 @@
+.bold.last{
+  position:absolute;
+  bottom:62px;
+  width:100%;
+}
+
+.bold.last2{
+  position:absolute;
+  bottom:110px;
+  width:100%;
+}
+
+.dark {
+  background-color: #2d3436;
+  color: #dfe6a9;
+}
+
+.light-mode {
+  background-color: #dfe6a9;
+  color: #2d3436;
+}

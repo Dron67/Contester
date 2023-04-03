@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col s12">
+    <h4>Все попытки:</h4>
+    <div *ngIf="!loading; else loader">
+      <div *ngIf="!user.role">
+        <div class="collection" *ngIf="solves.length !== 0 && tasks.length !== 0; else empty">
+          <a *ngFor="let solve of solves" class="collection-item" (click)="onTask(solve)">
+            <table>
+              <tr>
+                <td>{{solve.date}}</td>
+                <td>{{solve.taskName}}</td>
+                <td class="{{solve.result === 'Accept' ? 'green-text': 'red-text'}}">{{solve.result}}
+                  <i class="small material-icons">{{solve.result === 'Accept' ? 'done' : 'do_not_disturb'}}</i></td>
+                <td>{{solve.language}}</td>
+              </tr>
+            </table>
+          </a>
+        </div>
+      </div>
+      <div *ngIf="user.role">
+        <ul class="collapsible" #collapsible *ngIf="solves.length != 0; else empty">
+          <li *ngFor="let solve of solves">
+            <div class="collapsible-header collection-item-icon">
+              <table>
+                <tr>
+                  <td>{{solve.date}}</td>
+                  <td>{{solve.taskName}}</td>
+                  <td class="{{solve.result ==='Accept' ? 'green-text': 'red-text'}}">{{solve.result}}
+                    <i class="small material-icons">{{solve.result === 'Accept' ? 'done' : 'do_not_disturb'}}</i></td>
+                  <td>{{solve.language}}</td>
+                  <td><span> <i class="small material-icons" (click)="onInfo($event)">info</i></span></td>
+                  <td><span><i class="material-icons" (click)="onDelete($event, solve)">delete</i></span></td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="collapsible-body">
+              <div>
+                <span bind-innerText="solve.code">{{solve.code}}</span>
+              </div>
+              <div *ngIf="isError">
+                <span class="last">Error: {{solve.error}}</span><br>
+                <span class="last">Test: {{solve.test}}</span><br>
+                <span class="last">Time: {{solve.time}}</span><br>
+                <span class="last">Memory: {{solve.memory}}</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <ng-template #empty>
+        <div class="center">
+          У Вас нет попыток.
+        </div>
+      </ng-template>
+    </div>
+    <ng-template #loader>
+      <app-loader></app-loader>
+    </ng-template>
+  </div>
+</div>

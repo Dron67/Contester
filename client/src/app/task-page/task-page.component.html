@@ -1,0 +1,78 @@
+<div class="pages">
+  <div class="page-title">
+    <h2>{{task.name}}</h2>
+  </div>
+  <div class="content">
+    <span>Лимит времени:{{task.limitTime}} мс.</span>
+    <span>Лимит памяти:{{task.limitMemory}} Кб.</span>
+    <div class="divider"></div>
+    <div class="content" bind-innerHTML="task.condition">
+      {{task.condition}}
+    </div>
+    <div class="page-subtitle">
+      <h4>Отправить решение:</h4>
+    </div>
+    <form class="content" [formGroup]="form">
+      <div class="input-field">
+        <textarea id="textarea" class="materialize-textarea" formControlName="code"
+                  [ngClass]="{'invalid': form.get('code').invalid && form.get('code').touched}"></textarea>
+        <label for="textarea">Решение:</label>
+        <span class="helper-text red-text" *ngIf="form.get('code').invalid && form.get('code').touched">
+          Поле решение не должно быть пустым.
+        </span>
+      </div>
+      <div class="input-field">
+        <select formControlName="language" #select
+                [ngClass]="{'invalid': form.get('language').invalid && form.get('language').touched && form.get('language').value == null}">
+          <option [ngValue]="null" disabled>Выберите язык программирования</option>
+          <option *ngFor="let lang of language" [ngValue]="lang.name">{{lang.name}}</option>
+        </select>
+      </div>
+    </form>
+    <div>
+      <button class="btn" (click)="onSubmit()" [disabled]="form.invalid || form.disabled">Отправить</button>
+      <span class="helper-text red-text" *ngIf="!isTime"> Турнир закончился</span>
+    </div>
+  </div>
+  <div class="pages">
+    <div class="page-title">
+      <h4>Попытки:</h4>
+    </div>
+    <div *ngIf="!isCheck; else check"></div>
+    <ng-template #check>
+      {{solveCheck.message === 'Checking' ? 'Checking': 'Waiting'}}<br>
+    </ng-template>
+    <ul class="collapsible" #collapsible *ngIf="solves.length != 0; else empty">
+      <li *ngFor="let solve of solves">
+        <div class="collapsible-header collection-item-icon">
+          <table>
+            <tr>
+              <td>{{solve.date}}</td>
+              <td class="{{solve.result ==='Accept' ? 'green-text': 'red-text'}}" >{{solve.result}}
+                <i class="small material-icons">{{solve.result === 'Accept' ? 'done' : 'do_not_disturb'}}</i></td>
+              <td>{{solve.test ? 'Тест' : ''}} {{solve.test}}</td>
+              <td>{{solve.language}}</td>
+              <td><span> <i class="small material-icons" (click)="onInfo($event)" *ngIf="user.role">info</i></span></td>
+              <td><span><i class="material-icons" (click)="onDelete($event, solve)" *ngIf="user.role">delete</i></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="collapsible-body">
+          <div>
+            <span bind-innerText="solve.code">{{solve.code}}</span>
+          </div>
+          <div *ngIf="isError">
+            <span class="last">Error: {{solve.error}}</span><br>
+            <span class="last">Test: {{solve.test}}</span><br>
+            <span class="last">Time: {{solve.time}}</span><br>
+            <span class="last">Memory: {{solve.memory}}</span>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <ng-template #empty>
+      У вас нет попыток
+    </ng-template>
+  </div>
+</div>

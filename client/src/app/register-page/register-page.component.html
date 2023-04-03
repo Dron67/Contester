@@ -1,0 +1,69 @@
+<form class="card" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="card-content">
+    <span class="card-title">Создать аккаунт</span>
+    <div class="input-field">
+      <input formControlName="login" id="login" type="text"
+             [ngClass]="{'invalid' : form.get('login').invalid && form.get('login').touched}" >
+      <label for="login">Логин<a class="red-text">*</a>:</label>
+      <span class="helper-text red-text" *ngIf="form.get('login').invalid && form.get('login').touched">
+        <span *ngIf="form.get('login').errors['required']">Логин не должен быть пустым</span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input formControlName="lastName" id="lastName" type="text"
+             [ngClass]="{'invalid' : form.get('lastName').invalid && form.get('lastName').touched}">
+      <label for="lastName">Фамилия<a class="red-text">*</a>:</label>
+      <span class="helper-text red-text" *ngIf="form.get('lastName').invalid && form.get('lastName').touched">
+        <span *ngIf="form.get('lastName').errors['required']">Поле "Фамилия" не должен быть пустым</span>
+        <span *ngIf="form.get('lastName').errors['pattern']">Поле "Фамилия" может содержать английские и русские символы</span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input formControlName="firstName" id="firstName" type="text"
+             [ngClass]="{'invalid' : form.get('firstName').invalid && form.get('firstName').touched}">
+      <label for="firstName">Имя<a class="red-text">*</a>:</label>
+      <span class="helper-text red-text" *ngIf="form.get('firstName').invalid && form.get('firstName').touched">
+        <span *ngIf="form.get('firstName').errors['required']">Поле "Имя" не должен быть пустым</span>
+        <span *ngIf="form.get('firstName').errors['pattern']">Поле "Имя" может содержать английские и русские символы</span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input formControlName="secondName" id="secondName" type="text">
+      <label for="secondName">Отчество:</label>
+      <span class="helper-text red-text" *ngIf="form.get('secondName').invalid && form.get('secondName').touched">
+        <span *ngIf="form.get('secondName').errors['pattern']">Поле "Отчество" может содержать английские и русские символы</span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input formControlName="organization" id="organization" type="text"
+             [ngClass]="{'invalid' : form.get('password').invalid && form.get('password').touched}">
+      <label for="organization">Организация(ВУЗ):</label>
+      <span class="helper-text red-text" *ngIf="form.get('organization').invalid && form.get('organization').touched">
+        <span *ngIf="form.get('organization').errors['minlength'] && form.get('organization').errors['minlength']['requiredLength']">
+          Поле "Организация" должен быть больше {{form.get('organization').errors['minlength']['requiredLength']}} символов.
+        </span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input formControlName="password" id="password" type="password"
+             [ngClass]="{'invalid' : form.get('password').invalid && form.get('password').touched}">
+      <label for="password">Пароль<a class="red-text">*</a>:</label>
+      <span class="helper-text red-text" *ngIf="form.get('password').invalid && form.get('password').touched">
+        <span *ngIf="form.get('password').errors['required']">Пароль не должен быть пустым</span>
+        <span *ngIf="form.get('password').errors['minlength'] && form.get('password').errors['minlength']['requiredLength']">
+          Пароль должен быть больше {{form.get('password').errors['minlength']['requiredLength']}} символов.
+        </span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input formControlName="password2" id="password2" type="password">
+      <label for="password2">Подтвердите пароль<a class="red-text">*</a>:</label>
+      <span class="helper-text red-text" *ngIf="(form.get('password2').value != form.get('password').value) && form.get('password2').touched">
+        <span *ngIf="form.controls['password2'].value != form.controls['password'].value">Пароли должны совпадать</span>
+      </span>
+    </div>
+  </div>
+  <div class="card-action">
+    <button type="submit" class="modal-action btn waves-effect" [disabled]="form.invalid || form.disabled || form.get('password2').value != form.get('password').value">Создать</button>
+  </div>
+</form>

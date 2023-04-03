@@ -1,0 +1,98 @@
+<div class="page-title">
+  <h4>Профиль</h4>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col s12 l4 center">
+      <img class="responsive-img h200" [src]="imagePreview" *ngIf="imagePreview">
+    </div>
+    <div class="col s8">
+      <div class="input-field">
+        <input id="lastName" type="text" formControlName="lastName"
+               [ngClass]="{'invalid': form.get('lastName').invalid && form.get('lastName').touched}">
+        <label for="lastName">Фамилия:</label>
+        <span class="helper-text red-text" *ngIf="form.get('lastName').invalid && form.get('lastName').touched">
+          <span *ngIf="form.get('lastName').errors['required']">Поле "Фамилия" должно быть заполнено.</span>
+          <span *ngIf="form.get('lastName').errors['pattern']">Поле "Фамилия" может содержать только русские и английские символы.</span>
+        </span>
+      </div>
+      <div class="input-field">
+        <input id="firstName" type="text" formControlName="firstName"
+               [ngClass]="{'invalid': form.get('firstName').invalid && form.get('firstName').touched}">
+        <label for="firstName">Имя:</label>
+        <span class="helper-text red-text" *ngIf="form.get('firstName').invalid && form.get('firstName').touched">
+          <span *ngIf="form.get('firstName').errors['required']">Поле "Имя" должно быть заполнено.</span>
+          <span *ngIf="form.get('firstName').errors['pattern']">Поле "Имя" может содержать только русские и английские символы.</span>
+        </span>
+      </div>
+      <div class="input-field">
+        <input id="secondName" type="text" formControlName="secondName"
+               [ngClass]="{'invalid': form.get('secondName').invalid && form.get('secondName')}">
+        <label for="secondName">Отчество:</label>
+        <span class="helper-text red-text" *ngIf="form.get('secondName').invalid && form.get('secondName').invalid">
+          <span *ngIf="form.get('secondName').errors['pattern']">Поле "Отчество" может содержать только русские и английские символы.</span>
+        </span>
+      </div>
+    </div>
+    <div class="col s12">
+      <div class="input-field">
+        <input formControlName="organization" id="organization" type="text"
+        >
+        <label for="organization">Организация(ВУЗ):</label>
+        <span class="helper-text red-text" *ngIf="form.get('organization').invalid && form.get('organization').touched">
+        <span
+          *ngIf="form.get('organization').errors['minlength'] && form.get('organization').errors['minlength']['requiredLength']">
+          Поле "Организация" должен быть больше {{form.get('organization').errors['minlength']['requiredLength']}}
+          символов.
+        </span>
+        </span>
+      </div>
+      <div class="input-field" *ngIf="admin.role">
+        <select formControlName="role" #select>
+          <option value="0">Участник</option>
+          <option value="1">Администратор</option>
+        </select>
+        <label>Роль:</label>
+      </div>
+      <div class="input-field" *ngIf="admin.role">
+        <input formControlName="password" id="password" type="password"
+               [ngClass]="{'invalid': form.get('password').invalid && form.get('password').touched}">
+        <label for="password">Пароль:</label>
+        <span class="helper-text red-text" *ngIf="form.get('password').invalid && form.get('password').touched">
+          <span *ngIf="form.get('password').errors['required']">
+            Пароль не должен быть пустым
+          </span>
+          <span
+            *ngIf="form.get('password').errors['minlength'] && form.get('password').errors['minlength']['requiredLength']">
+            Пароль должен быть больше {{form.get('password').errors['minlength']['requiredLength']}} символов.
+          </span>
+        </span>
+      </div>
+      <div class="input-field" *ngIf="admin.role">
+        <input formControlName="password2" id="password2" type="password"
+               [ngClass]="{'invalid': form.get('password2').invalid && form.get('password2').touched}">
+        <label for="password2">Подтвердите пароль:</label>
+        <span class="helper-text red-text"
+              *ngIf="(form.get('password2').value != form.get('password').value) && form.get('password2').touched">
+          <span *ngIf="form.controls['password2'].value != form.controls['password'].value">
+            Пароли должны совпадать
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      <input type="file" name="image" class="dn" (change)="onFileUpload($event)" #input>
+      <button (click)="triggerClick()" [disabled]="form.disabled"
+              type="button" class="waves-effect waves-light btn orange lighten-2 mb2">
+        <i class="material-icons left">backup</i>Загрузить изображение
+      </button>
+    </div>
+    <div>
+      <button type="submit" class="modal-action btn waves-effect" [disabled]="form.invalid || form.disabled ||
+      form.controls['password2'].value != form.controls['password'].value">Сохранить
+      </button>
+    </div>
+  </div>
+</form>

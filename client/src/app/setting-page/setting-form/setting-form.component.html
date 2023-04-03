@@ -1,0 +1,55 @@
+<div class="page-title">
+  <h4><a routerLink="/setting">Настойки</a>
+    <i class="material-icons">keyboard_arrow_right</i>
+    {{isNew ? 'Добавить' : 'Редактировать'}} компилятор
+  </h4>
+  <span>
+    <button class="btn btn-small red" (click)="deleteSetting()"
+            *ngIf="!isNew">
+      <i class="material-icons">delete</i>
+    </button>
+  </span>
+</div>
+<div class="row">
+  <form class="col s12 l6" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="input-field">
+      <input id="name" type="text"
+             formControlName="name" [ngClass]="{'invalid': form.get('name').invalid && form.get('name').touched}">
+      <label for="name">Имя</label>
+      <span class="helper-text red-text"
+            *ngIf="form.get('name').invalid && form.get('name').touched">
+        <span *ngIf="form.get('name').errors['required']">
+          Имя компилятора не может быть пустым.
+        </span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input id="file" type="text"
+             formControlName="file" [ngClass]="{'invalid': form.get('file').invalid && form.get('file').touched}">
+      <label for="file">Исполняемый файл</label>
+      <span class="helper-text red-text"
+            *ngIf="form.get('file').invalid && form.get('file').touched">
+        <span *ngIf="form.get('file').errors['required']">
+          Имя исполняемого файла не может быть пустым.
+        </span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input id="commander" type="text"
+             formControlName="commander" [ngClass]="{'invalid': form.get('commander').invalid && form.get('commander').touched}">
+      <label for="commander">Команда на исполнение</label>
+      <span class="helper-text red-text"
+            *ngIf="form.get('commander').invalid && form.get('commander').touched">
+        <span *ngIf="form.get('commander').errors['required']">
+          Команда на исполнение не может быть пустой.
+        </span>
+      </span>
+    </div>
+    <div>
+      <button type="submit" class="waves-effect waves-light btn"
+              [disabled]="form.invalid || form.disabled">
+        Сохранить изменения
+      </button>
+    </div>
+  </form>
+</div>

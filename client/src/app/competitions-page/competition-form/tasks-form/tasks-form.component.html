@@ -1,0 +1,153 @@
+<div class="row">
+  <div class="col s12">
+    <div class="page-subtitle">
+      <h4>Задачи:</h4>
+      <button [routerLink]="['/competitions/table/'+competitionId]" class="waves-effect waves-light btn yellow darken-4 btn-small">
+        Турнираня таблица
+      </button>
+      <button
+        class="waves-effect waves-light btn grey darken-1 btn-small" *ngIf="user.role"
+        (click)="onAddTask()"
+      >
+        Добавить задачу
+      </button>
+    </div>
+    <div *ngIf="!loading; else loader">
+      <div class="collection" *ngIf="tasks.length !== 0; else empty">
+        <a *ngFor="let task of tasks"
+           class="collection-item collection-item-icon"
+           (click)="onSelectTack(task)"
+        >
+          <span>
+             {{task.name}}
+          </span>
+          <span>
+            <span>
+              <i class="material-icons" (click)="onEditTask($event, task)" *ngIf="user.role">editor</i>
+            </span>
+            <i class="material-icons" (click)="onDeleteTask($event, task)" *ngIf="user.role">delete</i>
+          </span>
+        </a>
+      </div>
+      <ng-template #empty>
+        <div class="center">В турнире нет задач.</div>
+      </ng-template>
+    </div>
+    <ng-template #loader>
+      <app-loader></app-loader>
+    </ng-template>
+  </div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="modal" #modal>
+    <div class="modal-content">
+      <h4 class="mb1">Добавить задачу</h4>
+      <div class="input-field">
+        <input id="task-name" type="text" formControlName="name"
+               [ngClass]="{'invalid': form.get('name').invalid && form.get('name').touched}">
+        <label for="task-name">Название</label>
+        <span class="helper-text red-text" *ngIf="form.get('name').invalid && form.get('name').touched">
+          Название не должно быть пустым.
+        </span>
+      </div>
+      <div class="input-field">
+        <textarea id="task-condition" type="text" formControlName="condition" class="materialize-textarea"
+                  [ngClass]="{'invalid': form.get('condition').invalid && form.get('condition').touched}"></textarea>
+        <label for="task-condition">Условие задачи</label>
+        <span class="helper-text red-text" *ngIf="form.get('condition').invalid && form.get('condition').touched">
+          Условие задачи не должно быть пустым.
+        </span>
+      </div>
+      <div class="input-field">
+        <input id="task-limitTime" type="number" formControlName="limitTime" min="0"
+               [ngClass]="{'invalid': form.get('limitTime').invalid && form.get('limitTime').touched}">
+        <label for="task-limitTime">Ограничение по времени</label>
+        <span class="helper-text red-text" *ngIf="form.get('limitTime').invalid && form.get('limitTime').touched">
+          Введите корректный лимит. Минимальное значение 0.
+        </span>
+      </div>
+      <div class="input-field">
+        <input id="task-limitMemory" type="number" formControlName="limitMemory" min="0"
+               [ngClass]="{'invalid': form.get('limitMemory').invalid && form.get('limitMemory').touched}">
+        <label for="task-limitMemory">Ограничение по памяти</label>
+        <span class="helper-text red-text" *ngIf="form.get('limitMemory').invalid && form.get('limitMemory').touched">
+          Введите корректный лимит. Минимальное значение 0.
+        </span>
+      </div>
+      <div class="input-field">
+        <textarea id="task-checker" class="materialize-textarea" type="text" formControlName="checker"
+                  [ngClass]="{'invalid': form.get('checker').invalid && form.get('checker').touched}"></textarea>
+        <label for="task-checker">Чекер</label>
+        <span class="helper-text red-text" *ngIf="form.get('checker').invalid && form.get('checker').touched">
+          Чекер не должен быть пустым.
+        </span>
+      </div>
+      <div class="input-field">
+        <select formControlName="language" #select
+                [ngClass]="{'invalid': form.get('language').invalid && form.get('language').touched && form.get('language').value == null}">
+          <option [ngValue]="null" disabled>Выберите язык чекера</option>
+          <option *ngFor="let lang of language" [ngValue]="lang.name">{{lang.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" (click)="onCancel()" class="modal-action waves-effect waves-black btn-flat"
+              [disabled]="form.disabled">Отмена
+      </button>
+      <button type="button" class="modal-action waves-effect waves-black btn" [disabled]="form.disabled || form.invalid"
+              (click)="onAddTest()">
+        Добавить тестовые пары
+      </button>
+      <button class="modal-action btn waves-effect" type="submit" [disabled]="form.disabled || form.invalid">Сохранить
+      </button>
+    </div>
+  </div>
+</form>
+
+<form [formGroup]="formTest" (ngSubmit)="onSubmitTest()">
+  <div class="modal" #modalTest>
+    <div class="modal-content">
+      <h4 class="mb1">Добавить тестовую пару</h4>
+      <ul class="collapsible" #collapsible *ngIf="tests.length != 0; else empty">
+        <li *ngFor="let test of tests">
+          <div class="collapsible-header collection-item-icon">Input {{tests.indexOf(test)+1}}
+            <span>
+              <i class="material-icons" (click)="onEditTest($event, test)">editor</i>
+              <span>
+                <i class="material-icons" (click)="onDeleteTest($event, test)">delete</i>
+              </span>
+            </span>
+          </div>
+          <div class="collapsible-body" bind-innerText="test.input"><span>{{test.input}}</span></div>
+          <div class="collapsible-header">Pattern {{tests.indexOf(test)+1}}</div>
+          <div class="collapsible-body" bind-innerText="test.pattern"><span>{{test.pattern}}</span></div>
+        </li>
+      </ul>
+      <ng-template #empty>
+        Не добавлены тестовые пары
+      </ng-template>
+      <div class="input-field">
+        <textarea id="input" class="materialize-textarea" formControlName="input"
+                  [ngClass]="{'invalid': formTest.get('input').invalid && formTest.get('input').touched}"></textarea>
+        <label for="input">Input</label>
+        <span class="helper-text red-text" *ngIf="formTest.get('input').invalid && formTest.get('input').touched">
+          Input не должен быть пустым.
+        </span>
+      </div>
+      <div class="input-field">
+        <textarea id="pattern" class="materialize-textarea" formControlName="pattern"
+                  [ngClass]="{'invalid': formTest.get('pattern').invalid && formTest.get('pattern').touched}"></textarea>
+        <label for="pattern">Pattern</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="modal-action waves-effect waves-black btn-flat" (click)="onCancelTest()"
+              [disabled]="formTest.disabled">Отмена
+      </button>
+      <button class="modal-action btn waves-effect" (click)="onSubmitTest()"
+              [disabled]="formTest.disabled || formTest.invalid">Сохранить
+      </button>
+    </div>
+  </div>
+</form>

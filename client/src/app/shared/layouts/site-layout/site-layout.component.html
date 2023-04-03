@@ -1,0 +1,41 @@
+<ul class="sidenav" #sidenav>
+  <li>
+    <div class="user-view">
+      <a [routerLink]="['/profile']" class="sidenav-trigger" (click)="onSidenavClose()">
+        <img class="circle" [src]="imagePreview">
+      </a>
+      <a [routerLink]="['/profile']" class="sidenav-trigger" (click)="onSidenavClose()">
+        <span class="red-text name">{{fio}}</span>
+      </a>
+    </div>
+  </li>
+  <li><div class="divider"></div></li>
+  <li class="bold" *ngFor="let link of links" routerLinkActive="active">
+    <a [routerLink]="[link.url]" class="waves-effect waves-orange sidenav-trigger"
+       (click)="onSidenavClose()"><i class="material-icons">{{link.icons}}</i>{{link.name}}</a>
+  </li>
+  <li class="bold" *ngIf="user.role">
+    <a class="waves-effect waves-orange" (click)="onSidenavClose()" [routerLink]="['/setting']">
+      <i class="material-icons">settings</i>
+      Настройки</a>
+  </li>
+  <li class="bold last2">
+    <a class="switch waves-effect waves-orange" (click)="switchClick()">
+      <label>
+        <input type="checkbox" [checked]="isSwOn" (click)="switchClick()">
+        <span class="lever"></span>
+      </label>
+      Темный режим
+    </a>
+  </li>
+  <li class="bold last">
+    <a class="waves-effect waves-orange" (click)="logout($event)">
+      <i class="material-icons">logout</i>
+      Выйти</a>
+  </li>
+</ul>
+<a class="sidenav-trigger material-icons btn" (click)="onSidenavOpen()">menu</a>
+<main class="content">
+  <router-outlet></router-outlet>
+</main>
+

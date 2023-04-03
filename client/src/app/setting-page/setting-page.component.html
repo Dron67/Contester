@@ -1,0 +1,22 @@
+<div class="page-title">
+  <h4>Настройки</h4>
+  <button class="waves-effect waves-light btn grey darken-1"
+          routerLink="/setting/new">Добавить компилятор</button>
+</div>
+<div class="row" *ngIf="settings$ | async as settings; else loader">
+  <div class="col s12">
+    <div class="collection" *ngIf="settings.length !== 0; else empty">
+      <a *ngFor="let setting of settings"
+         [routerLink]="['/setting', setting._id]"
+         class="collection-item">{{setting.name}}</a>
+    </div>
+    <ng-template #empty>
+      <div class="center">
+        У нас нет ни одного компилятора.
+      </div>
+    </ng-template>
+  </div>
+</div>
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

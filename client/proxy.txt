@@ -1,0 +1,7 @@
+Backend
+
+http://localhost:5000/api/auth/login
+
+Fronted
+
+/api/auth/login

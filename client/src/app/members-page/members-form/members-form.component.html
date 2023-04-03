@@ -1,0 +1,21 @@
+<div class="page-title">
+  <h4><a routerLink="/members">Участики</a>
+  <i class="material-icons">keyboard_arrow_right</i>
+    Участник
+  </h4>
+</div>
+<div class="pages">
+  <div class="row">
+    <div class="col s12 l4 center">
+      <img class="responsive-img h500" [src]="user.imageSrc">
+    </div>
+    <ul class="col s8">
+      <li>Фамилия: {{user.lastName}}</li>
+      <li>Имя: {{user.firstName}}</li>
+      <li>Отчество: {{user.secondName}}</li>
+      <li>Роль: {{user.role ? 'Администратор' : 'Участник'}}</li>
+      <li>Организация: {{user.organization}}</li>
+    </ul>
+  </div>
+</div>
+<app-alltry-page [userId] = user._id></app-alltry-page>

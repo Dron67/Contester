@@ -1,0 +1,30 @@
+<div class="center" id="print-section">
+  <h2>Турнирная таблица</h2>
+  <h6 class="{{konch ? 'blue-text' : dostupno ? 'black-text': 'red-text'}}">
+    {{dostupno ? konch ? "Турнир закончился" : "Прошло: " + TimeStart +
+    " Осталось: " + TimeEnd : "Турнир еще не начался"}}</h6>
+  <table class="table-of-contents">
+    <thead>
+      <tr>
+        <td class="center" style="font-weight: bold">Место</td>
+        <td style="font-weight: bold">Участник</td>
+        <td *ngFor="let task of Tasks" class="center" style="font-weight: bold">{{task.name}}</td>
+        <td class="center" style="font-weight: bold">Время</td>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let table of Tablet">
+      <td class="center">{{table.mesto == 0 ? "" : table.mesto}}</td>
+      <td>{{table.fio}}</td>
+      <td *ngFor="let task of Tasks"
+          class="center {{table[task._id] ? table[task._id].isAccept ? 'green-text': 'red-text' : 'green-text'}}">
+        <span>
+          {{table[task._id] ? table[task._id].col_solve == 0 ? "+": table[task._id].isAccept ? "+".concat(table[task._id].col_solve) : table[task._id].col_solve : ""}}</span><br>
+        {{table[task._id] ? table[task._id].posl_time : ""}}
+      </td>
+      <td class="center">{{table.time}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<button class="btn" ngxPrint printTitle="Турнирная таблица" printSectionId="print-section">Печать</button>

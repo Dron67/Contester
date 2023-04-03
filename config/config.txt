@@ -1,0 +1,6 @@
+python3
+solve.py
+python3 solve.py
+g++
+solve.cpp
+g++ solve.cpp

@@ -1,0 +1,41 @@
+<div class="page-title">
+  <h4>Участники</h4>
+  <input type="file" name="image" class="dn" (change)="onFileUpload($event)" #input>
+  <button *ngIf="user.role" class="waves-effect waves-light btn grey darken-1" (click)="triggeredClick()">
+    Добавить участиков
+  </button>
+</div>
+<div class="row" *ngIf="!loading; else loader">
+  <div class="col s12">
+    <div class="collection">
+      <a *ngFor="let member of members"
+         class="collection-item collection-item-icon"
+         (click)="onSelectUser(member)"
+      >
+        <span>
+        <img class="circle w50 h50"
+             [src]="member.imageSrc"> {{member.lastName}} {{member.firstName}} {{member.secondName}}
+        </span>
+        <span>
+          <i class="material-icons" (click)="onEditUser($event, member)" *ngIf="user.role">edit</i>
+          <i class="material-icons" (click)="onDeleteUser($event, member)" *ngIf="user.role">delete</i>
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<form>
+  <div class="modal" #modal>
+    <div class="modal-content">
+      <input type="file" name="image" class="dn" (change)="onFileUpload($event)" #input>
+      <button type="button" class="waves-effect waves-light btn orange lighten-2 mb2">
+        <i class="material-icons left">backup</i> Загрузить список участников
+      </button>
+    </div>
+  </div>
+</form>
+
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>

@@ -1,0 +1,69 @@
+<div class="page-title">
+  <h4><a routerLink="/competition">Турниры</a>
+    <i class="material-icons">keyboard_arrow_right</i>
+    {{!user.role ? competition.name: isNew ? 'Добавить турнир' : 'Редактировать турнир'}}
+  </h4>
+  <span>
+    <button class="btn btn-small red" (click)="deleteCompetition()"
+            *ngIf="!isNew && user.role">
+      <i class="material-icons">delete</i>
+    </button>
+  </span>
+</div>
+<div class="row" *ngIf="user.role">
+  <form class="col s12 l6" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="input-field">
+      <input id="name" type="text"
+             formControlName="name" [ngClass]="{'invalid': form.get('name').invalid && form.get('name').touched}">
+      <label for="name">Название</label>
+      <span class="helper-text red-text"
+            *ngIf="form.get('name').invalid && form.get('name').touched">
+        <span *ngIf="form.get('name').errors['required']">
+          Имя турнира не может быть пустым.
+        </span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input id="timeStart" type="text" formControlName="timeStart"
+             [ngClass]="{'invalid': form.get('timeStart').invalid && form.get('timeStart').touched}"
+      >
+      <label for="timeStart">Начало турнира</label>
+      <span class="helper-text red-text"
+            *ngIf="form.get('timeStart').invalid && form.get('timeStart').touched">
+        <span *ngIf="form.get('timeStart').errors['required']">
+          Время начала турнира не может быть пустым.
+        </span>
+        <span *ngIf="form.get('timeStart').errors['pattern']">
+          Не соответствует формату.
+        </span>
+      </span>
+    </div>
+    <div class="input-field">
+      <input id="timeEnd" type="text" formControlName="timeEnd"
+             [ngClass]="{'invalid': form.get('timeEnd').invalid && form.get('timeEnd') &&
+      form.controls['timeStart'].value >= form.controls['timeEnd'].value}">
+      <label for="timeEnd">Конец турнира</label>
+      <span class="helper-text red-text" *ngIf="form.controls['timeStart'].value >= form.controls['timeEnd'].value">
+          Время начала не может быть больше или равно времени конца турнира.
+      </span>
+      <span class="helper-text red-text"
+            *ngIf="form.get('timeEnd').invalid && form.get('timeEnd').touched">
+        <span *ngIf="form.get('timeEnd').errors['required']">
+          Время конца турнира не может быть пустым.
+        </span>
+        <span *ngIf="form.get('timeEnd').errors['pattern']">
+          Не соответствует формату.
+        </span>
+      </span>
+    </div>
+    <div>
+      <button type="submit" class="waves-effect waves-light btn"
+              [disabled]="form.invalid || form.disabled || form.get('timeStart').value >= form.get('timeEnd').value">
+        Сохранить изменения
+      </button>
+    </div>
+  </form>
+</div>
+
+<app-tasks-form [competitionId]="competition._id" *ngIf="competition?._id">
+</app-tasks-form>
