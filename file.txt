@@ -1,0 +1,4 @@
+<button ngxPrint printTitle="Турнирная таблица" printSectionId="print-section" ="true">Печать</button>
+
+app module ts
+import {NgxPrintModule} from 'ngx-print';
