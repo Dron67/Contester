@@ -1,0 +1,2 @@
+{"_id":{"$oid":"63917ca2383028588350bff4"},"name":"python","file":"solve.py","commander":"python3 solve.py","__v":0}
+{"_id":{"$oid":"6391f8e4c5a2d252c908471e"},"name":"c++","file":"solve.cpp","commander":"g++ solve.cpp -o solve.out;./solve.out","__v":0}
